@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Meal</string>
+    <string name="url">url</string>
+    <string name="title">title</string>
 </resources>

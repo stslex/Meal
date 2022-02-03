@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.konan.properties.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 val composeVersion = "1.0.5"
@@ -55,8 +57,17 @@ android {
 }
 
 dependencies {
+    //Hilt
+    val hiltVersion = "2.38.1"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.navigation:navigation-compose:2.5.0-alpha01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.compose.ui:ui:$composeVersion")

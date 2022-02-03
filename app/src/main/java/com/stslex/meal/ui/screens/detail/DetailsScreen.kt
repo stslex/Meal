@@ -1,4 +1,4 @@
-package com.stslex.meal.ui.screens
+package com.stslex.meal.ui.screens.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

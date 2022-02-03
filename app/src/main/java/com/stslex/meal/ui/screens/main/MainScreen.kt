@@ -1,6 +1,5 @@
-package com.stslex.meal.ui.screens
+package com.stslex.meal.ui.screens.main
 
-import android.content.Context
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Image
@@ -12,45 +11,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import com.stslex.meal.ui.theme.MealTheme
+import com.stslex.meal.ui.navigation.Screen
 import kotlinx.coroutines.Dispatchers
 
-@Preview(
-    name = "dark theme",
-    showBackground = true,
-    apiLevel = 32,
-    showSystemUi = true,
-    device = "Pixel 6"
-)
 @Composable
-fun DefaultPreview() {
-    val context: Context = LocalContext.current
-    MealTheme(false) {
-        MainScreen(navController = NavController(context))
-    }
-}
-
-@Composable
-fun MainScreen(navController: NavController) {
-    val url = remember {
-        "https://images.unsplash.com/photo-1640622660721-45b83554ab05?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2187&q=80"
-    }
-
+fun MainScreen(
+    navController: NavController,
+    viewModel: MainScreenViewModel
+) {
+    val url: String by remember(viewModel) {
+        viewModel.getUrl()
+    }.collectAsState(initial = "", context = Dispatchers.IO)
     LazyColumn {
         items(10) {
             val isPressed = remember { mutableStateOf(false) }
@@ -74,7 +55,7 @@ fun MainScreen(navController: NavController) {
                         .height(300.dp)
                         .clipToBounds()
                         .clickable {
-                            navController.navigate("details")
+                            navController.navigate(Screen.Details.route)
                         },
                     contentScale = ContentScale.FillBounds,
                     painter = rememberImagePainter(url,
@@ -105,5 +86,4 @@ fun MainScreen(navController: NavController) {
 
         }
     }
-
 }

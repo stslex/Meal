@@ -7,11 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.stslex.meal.ui.navigation.NavHostInit
+import com.stslex.meal.ui.navigation.NavigationHost
 import com.stslex.meal.ui.theme.MealTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var navigationHost: NavigationHost
+
+    @Inject
+    fun injection(navigationHost: NavigationHost) {
+        this.navigationHost = navigationHost
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +28,9 @@ class MainActivity : ComponentActivity() {
             MealTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val navController = rememberNavController()
-                    NavHostInit(navController = navController)
-                }
+                    color = MaterialTheme.colorScheme.background,
+                    content = navigationHost.init()
+                )
             }
         }
     }
