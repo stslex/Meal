@@ -19,10 +19,10 @@ class PagingModule {
         pageSize = DEFAULT_PAGE_SIZE,
         enablePlaceholders = PLACE_HOLDER_ENABLE
     )
-
-    @Provides
-    fun providesPagingPhotosSource(service: PhotosApiService): PagingSource<Int, ImageEntity> =
-        PhotosPagingSource(service)
+//
+//    @Provides
+//    fun providesPagingPhotosSource(service: PhotosApiService): PagingSource<Int, ImageEntity> =
+//        PhotosPagingSource(service)
 
     companion object {
         private const val DEFAULT_PAGE_SIZE = 10

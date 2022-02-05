@@ -5,10 +5,11 @@ import androidx.paging.PagingState
 import com.stslex.meal.BuildConfig.API_KEY
 import com.stslex.meal.data.api.PhotosApiService
 import com.stslex.meal.data.entity.ImageEntity
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import retrofit2.HttpException
-import javax.inject.Inject
 
-class PhotosPagingSource @Inject constructor(
+class PhotosPagingSource @AssistedInject constructor(
     private val service: PhotosApiService
 ) : PagingSource<Int, ImageEntity>() {
 
@@ -42,6 +43,11 @@ class PhotosPagingSource @Inject constructor(
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(): PhotosPagingSource
     }
 
     companion object {
