@@ -12,7 +12,7 @@ Application for restaurant service. With Auth, latest news and booking.
   - Gradle -> Kotlin DSL
   - Retrofit 2
   - Dagger2 with Hilt (integration vm in Compose)
-  - Multimodule stracture
+  - Multimodule structure
   - MVVM acrhitecture
   - Flow
   - Coroutines
