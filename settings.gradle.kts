@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Meal"
 include(":app")
+include(":core")

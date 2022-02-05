@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 
 @Composable
-fun DetailsScreen(navController: NavController) {
+fun DetailsScreen(navController: NavController, viewModel: DetailsViewModel) {
     Column {
         Surface(
             modifier = Modifier

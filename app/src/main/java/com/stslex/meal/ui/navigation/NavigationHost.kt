@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.stslex.meal.ui.screens.detail.DetailsScreen
+import com.stslex.meal.ui.screens.detail.DetailsViewModel
 import com.stslex.meal.ui.screens.main.MainScreen
 import com.stslex.meal.ui.screens.main.MainScreenViewModel
 import javax.inject.Inject
@@ -26,13 +27,17 @@ interface NavigationHost {
             ) {
                 composable(Screen.Main.route) {
                     val parentEntry = remember {
-                        navController.getBackStackEntry("Parent")
+                        navController.getBackStackEntry(Screen.Main.resourceId)
                     }
                     val viewModel: MainScreenViewModel = hiltViewModel(parentEntry)
                     MainScreen(navController = navController, viewModel = viewModel)
                 }
                 composable(Screen.Details.route) {
-                    DetailsScreen(navController)
+                    val parentEntry = remember {
+                        navController.getBackStackEntry(Screen.Main.resourceId)
+                    }
+                    val viewModel: DetailsViewModel = hiltViewModel(parentEntry)
+                    DetailsScreen(navController, viewModel = viewModel)
                 }
             }
         }

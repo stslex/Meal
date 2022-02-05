@@ -1,4 +1,4 @@
-package com.stslex.meal.di
+package com.stslex.meal.di.modules
 
 import com.stslex.meal.ui.navigation.NavigationHost
 import dagger.Binds

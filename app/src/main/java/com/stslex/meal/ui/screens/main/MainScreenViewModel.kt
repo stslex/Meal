@@ -2,24 +2,29 @@ package com.stslex.meal.ui.screens.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.stslex.meal.data.mappers.PagingImageMapper
+import com.stslex.meal.data.photos.PhotosRepository
+import com.stslex.meal.ui.model.ImageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor() : ViewModel() {
+class MainScreenViewModel @Inject constructor(
+    private val photosRepository: PhotosRepository,
+    private val mapper: PagingImageMapper
+) : ViewModel() {
 
-    fun getUrl(): StateFlow<String> = flowOf(DEFAULT_URL).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = ""
-    )
-
-    companion object {
-        private const val DEFAULT_URL =
-            "https://images.unsplash.com/photo-1640622660721-45b83554ab05?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2187&q=80"
-    }
+    @ExperimentalCoroutinesApi
+    fun getAllPhotos(): StateFlow<PagingData<ImageModel>> =
+        photosRepository.listenAllPhotos().flatMapLatest(mapper::map).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = PagingData.empty()
+        )
 }
