@@ -23,9 +23,8 @@ Application for restaurant service. With Auth, latest news and booking.
   - Firebase Auth (from gaccount / phone number)
   - Firebase Firestore
   - Firebase Cloud Messaging
-  - 
 
-## Instalation
+## Installation
 
 It'll be available as soon as I'll be able to make this
 
