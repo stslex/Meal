@@ -2,7 +2,7 @@ package com.stslex.core
 
 interface Mapper {
 
-    interface Data<S, R> : Mapper {
+    fun interface Data<S, R> : Mapper {
         fun map(data: S): R
     }
 

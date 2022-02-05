@@ -11,14 +11,17 @@ import com.stslex.meal.ui.screens.detail.DetailsScreen
 import com.stslex.meal.ui.screens.detail.DetailsViewModel
 import com.stslex.meal.ui.screens.main.MainScreen
 import com.stslex.meal.ui.screens.main.MainScreenViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 interface NavigationHost {
 
+    @ExperimentalCoroutinesApi
     fun init(): @Composable () -> Unit
 
     class Base @Inject constructor() : NavigationHost {
 
+        @ExperimentalCoroutinesApi
         override fun init(): @Composable () -> Unit = {
             val navController: NavHostController = rememberNavController()
             NavHost(
@@ -29,7 +32,7 @@ interface NavigationHost {
                     val parentEntry = remember {
                         navController.getBackStackEntry(Screen.Main.resourceId)
                     }
-                    val viewModel: MainScreenViewModel = hiltViewModel(parentEntry)
+                    val viewModel: MainScreenViewModel = hiltViewModel()
                     MainScreen(navController = navController, viewModel = viewModel)
                 }
                 composable(Screen.Details.route) {

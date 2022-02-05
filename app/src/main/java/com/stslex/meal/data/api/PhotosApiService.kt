@@ -1,18 +1,18 @@
-package com.stslex.meal.data.photos
+package com.stslex.meal.data.api
 
-import com.stslex.meal.data.model.RemoteImageModel
+import com.stslex.meal.data.entity.ImageEntity
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PhotosService {
+interface PhotosApiService {
 
     @GET(GET_PHOTOS)
     suspend fun getPhotos(
         @Query(QUERY_PAGE) page: Int,
         @Query(QUERY_PAGE_SIZE) page_size: Int,
         @Query(QUERY_API_KEY) api_key: String
-    ): Response<List<RemoteImageModel>>
+    ): Response<List<ImageEntity>>
 
     companion object {
         private const val GET_PHOTOS = "photos"

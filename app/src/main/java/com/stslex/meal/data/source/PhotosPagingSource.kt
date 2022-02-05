@@ -1,24 +1,24 @@
-package com.stslex.meal.data.photos
+package com.stslex.meal.data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.stslex.meal.BuildConfig.API_KEY
-import com.stslex.meal.data.model.RemoteImageModel
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import com.stslex.meal.data.api.PhotosApiService
+import com.stslex.meal.data.entity.ImageEntity
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class PhotosPagingSource @AssistedInject constructor(
-    private val service: PhotosService
-) : PagingSource<Int, RemoteImageModel>() {
+class PhotosPagingSource @Inject constructor(
+    private val service: PhotosApiService
+) : PagingSource<Int, ImageEntity>() {
 
-    override fun getRefreshKey(state: PagingState<Int, RemoteImageModel>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ImageEntity>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
         return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RemoteImageModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageEntity> {
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
@@ -42,11 +42,6 @@ class PhotosPagingSource @AssistedInject constructor(
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(): PhotosPagingSource
     }
 
     companion object {

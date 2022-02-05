@@ -10,6 +10,7 @@ import com.stslex.meal.di.scope.OnlineInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -20,10 +21,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 class RetrofitModule {
 
+    @Singleton
     @Provides
     fun providesRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
@@ -45,7 +47,6 @@ class RetrofitModule {
         .cache(cache)
         .build()
 
-    @Singleton
     @Provides
     fun providesCacheDir(application: Application): Cache = Cache(application.cacheDir, CACHE_SIZE)
 
