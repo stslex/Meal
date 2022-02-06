@@ -1,25 +1,12 @@
 package com.stslex.meal.data.photos
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import com.stslex.meal.data.entity.ImageEntity
 import com.stslex.meal.data.source.PhotosPagingSource
 import com.stslex.meal.domain.repository.PhotosRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PhotosRepositoryImpl @Inject constructor(
-    private val pagingSource: PhotosPagingSource.Factory,
-    private val pagingConfig: PagingConfig
+    private val pagingSourceFactory: PhotosPagingSource.Factory
 ) : PhotosRepository {
 
-    override fun getAllPhotos(): Flow<PagingData<ImageEntity>> = Pager(
-        config = pagingConfig,
-        pagingSourceFactory = pagingSourceFactory
-    ).flow
-
-    private val pagingSourceFactory: () -> PagingSource<Int, ImageEntity>
-        get() = { pagingSource.create().apply { invalidate() } }
+    override fun queryAll(): PhotosPagingSource = pagingSourceFactory.create()
 }

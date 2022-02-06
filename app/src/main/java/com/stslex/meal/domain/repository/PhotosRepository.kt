@@ -1,10 +1,7 @@
 package com.stslex.meal.domain.repository
 
-import androidx.paging.PagingData
-import com.stslex.meal.data.entity.ImageEntity
-import kotlinx.coroutines.flow.Flow
+import com.stslex.meal.data.source.PhotosPagingSource
 
 interface PhotosRepository {
-
-    fun getAllPhotos(): Flow<PagingData<ImageEntity>>
+    fun queryAll(): PhotosPagingSource
 }

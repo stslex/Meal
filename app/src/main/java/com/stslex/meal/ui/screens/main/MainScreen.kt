@@ -1,5 +1,7 @@
 package com.stslex.meal.ui.screens.main
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Image
@@ -39,14 +41,18 @@ fun MainScreen(
     viewModel: MainScreenViewModel
 ) {
     val lazyPagingItems: LazyPagingItems<ImageModel> =
-        viewModel.getAllPhotos().collectAsLazyPagingItems()
+        viewModel.photos.collectAsLazyPagingItems()
     BindsItems(navController = navController, lazyPagingItems = lazyPagingItems)
 }
 
 @Composable
-private fun BindsItems(navController: NavController, lazyPagingItems: LazyPagingItems<ImageModel>) {
+private fun BindsItems(
+    navController: NavController,
+    lazyPagingItems: LazyPagingItems<ImageModel>
+) {
     LazyColumn {
         items(lazyPagingItems) { imageModel ->
+            Log.i(TAG, imageModel.toString())
             val isPressed = remember { mutableStateOf(false) }
             val targetCount by animateIntAsState(
                 targetValue = if (isPressed.value) 10 else 3,
