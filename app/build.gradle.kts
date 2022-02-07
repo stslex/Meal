@@ -60,6 +60,10 @@ android {
 dependencies {
     implementation(project(":core"))
 
+    //Accompanist
+    val accompanistVersion = "0.19.0"
+    implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
+
     //Jetpack Paging
     val pagingVersion = "1.0.0-alpha14"
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")

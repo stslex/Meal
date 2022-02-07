@@ -1,7 +1,5 @@
 package com.stslex.meal.data.source
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.stslex.core.Mapper
@@ -26,7 +24,7 @@ class PhotosPagingSource @AssistedInject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageModel> {
         try {
-            val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
+            val pageNumber = params.key ?: 1
             val pageSize = params.loadSize
 
             val response = service.getPhotos(
@@ -34,9 +32,6 @@ class PhotosPagingSource @AssistedInject constructor(
                 page_size = pageSize,
                 api_key = API_KEY
             )
-
-            Log.i(ContentValues.TAG, response.toString())
-
             return if (response.isSuccessful) {
                 val photos = response.body()!!.map(mapper::map)
                 val nextPageNumber = if (photos.isEmpty()) null else pageNumber + 1
@@ -55,9 +50,5 @@ class PhotosPagingSource @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(): PhotosPagingSource
-    }
-
-    companion object {
-        private const val INITIAL_PAGE_NUMBER = 10
     }
 }

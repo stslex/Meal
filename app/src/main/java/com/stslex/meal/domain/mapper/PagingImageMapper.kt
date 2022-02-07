@@ -7,6 +7,10 @@ import com.stslex.meal.ui.model.ImageModel
 class PagingImageMapper : Mapper.Data<ImageEntity, ImageModel> {
 
     override fun map(data: ImageEntity): ImageModel = with(data) {
-        ImageModel.Base(id = id, url = urls.regular)
+        ImageModel.Base(
+            id = id,
+            url = urls.regular,
+            description = description ?: "Title"
+        )
     }
 }
