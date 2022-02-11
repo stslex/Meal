@@ -1,5 +1,6 @@
 package com.stslex.meal.ui.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,16 +29,10 @@ interface NavigationHost {
                 startDestination = Screen.Main.route
             ) {
                 composable(Screen.Main.route) {
-//                    val parentEntry = remember {
-//                        navController.getBackStackEntry(Screen.Main.resourceId)
-//                    }
                     val viewModel: MainScreenViewModel = hiltViewModel()
                     MainScreen(navController = navController, viewModel = viewModel)
                 }
                 composable(Screen.Details.route) {
-//                    val parentEntry = remember {
-//                        navController.getBackStackEntry(Screen.Main.resourceId)
-//                    }
                     val viewModel: DetailsViewModel = hiltViewModel()
                     DetailsScreen(navController, viewModel = viewModel)
                 }
