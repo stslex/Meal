@@ -3,6 +3,7 @@ package com.stslex.meal.ui.navigation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,7 @@ import com.stslex.meal.ui.screens.news.NewsScreen
 import com.stslex.meal.ui.screens.news.NewsScreenViewModel
 import com.stslex.meal.ui.screens.order.OrderScreen
 
+@ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable

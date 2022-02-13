@@ -3,4 +3,7 @@
     <string name="url">url</string>
     <string name="news">news</string>
     <string name="order">order</string>
+
+    <string name="label_available">available</string>
+    <string name="label_unavailable">unavailable</string>
 </resources>
