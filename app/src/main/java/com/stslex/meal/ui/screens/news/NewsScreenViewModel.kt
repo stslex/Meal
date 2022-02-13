@@ -1,11 +1,10 @@
-package com.stslex.meal.ui.screens.main
+package com.stslex.meal.ui.screens.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.stslex.meal.ui.model.ImageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -13,8 +12,8 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(
-    private val queryPhotosUseCaseProvider: Provider<QueryPhotosUseCase>,
+class NewsScreenViewModel @Inject constructor(
+    private val queryPhotosUseCaseProvider: Provider<QueryNewsUseCase>,
     private val pagingConfig: PagingConfig
 ) : ViewModel() {
 
@@ -26,7 +25,6 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    @ExperimentalCoroutinesApi
     val photos: StateFlow<PagingData<ImageModel>> = newPagerPhotos.flow
         .cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

@@ -1,28 +1,26 @@
-package com.stslex.meal.ui.screens.main
+package com.stslex.meal.ui.screens.news
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.stslex.meal.ui.common.setScrollingColumnAnimation
 import com.stslex.meal.ui.model.ImageModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
+@ExperimentalMaterial3Api
 @Composable
-fun MainScreen(
+fun NewsScreen(
     navController: NavController,
-    viewModel: MainScreenViewModel
+    viewModel: NewsScreenViewModel
 ) {
     val lazyPagingItems: LazyPagingItems<ImageModel> = viewModel.photos.collectAsLazyPagingItems()
     MainScreenLazyColumn(
@@ -34,21 +32,24 @@ fun MainScreen(
 @Composable
 fun MainScreenLazyColumn(
     lazyPagingItems: LazyPagingItems<ImageModel>,
-    navController: NavController
+    navController: NavController,
+    lazyListState: LazyListState = rememberLazyListState()
 ) {
-    LazyColumn {
-        items(lazyPagingItems) { imageModel ->
-            Surface(
-                modifier = Modifier.padding(16.dp),
-                shadowElevation = 4.dp,
-                tonalElevation = 4.dp,
-                color = MaterialTheme.colorScheme.surfaceVariant
+    LazyColumn(
+        state = lazyListState
+    ) {
+        items(
+            items = lazyPagingItems,
+            key = { it.url() }
+        ) { imageModel ->
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .setScrollingColumnAnimation(lazyListState, imageModel?.url())
             ) {
-                Column {
-                    MainScreenImage(imageModel = imageModel, navController = navController)
-                    MainScreenContentText()
-                }
                 MainScreenTitleText(imageModel = imageModel)
+                MainScreenImage(imageModel = imageModel, navController = navController)
+                NewsScreenContentText()
             }
         }
     }

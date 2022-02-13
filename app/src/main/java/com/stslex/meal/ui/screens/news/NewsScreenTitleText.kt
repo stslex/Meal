@@ -1,4 +1,4 @@
-package com.stslex.meal.ui.screens.main
+package com.stslex.meal.ui.screens.news
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

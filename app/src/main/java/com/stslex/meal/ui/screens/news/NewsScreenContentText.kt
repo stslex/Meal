@@ -1,4 +1,4 @@
-package com.stslex.meal.ui.screens.main
+package com.stslex.meal.ui.screens.news
 
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateIntAsState
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.stslex.meal.ui.common.customPlaceholder
 
 @Composable
-fun MainScreenContentText() {
+fun NewsScreenContentText() {
     val isPressed = remember { mutableStateOf(false) }
     val targetCount by animateIntAsState(
         targetValue = if (isPressed.value) 10 else 3,
