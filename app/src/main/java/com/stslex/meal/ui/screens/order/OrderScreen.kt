@@ -1,50 +1,120 @@
 package com.stslex.meal.ui.screens.order
 
+import android.widget.CalendarView
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
 
+@ExperimentalComposeUiApi
+@ExperimentalFoundationApi
+@ExperimentalMaterial3Api
 @Composable
 fun OrderScreen() {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
-
-    val elementWidth = screenWidth / 2
-    val elementHeight = screenHeight / 4
-    val modifier: Modifier = Modifier
-        .height(elementHeight)
-        .width(elementWidth)
+    val isClicked = remember {
+        mutableStateOf(0)
+    }
+    val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     Column {
-        Row {
-            OneElement(modifier)
-            OneElement(modifier)
+        OutlinedButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+                setShowDialog(true)
+            }
+        ) {
+            Text(text = "Select time")
         }
-        Row {
-            OneElement(modifier)
-            OneElement(modifier)
+        MyCalendarView(showDialog, setShowDialog)
+        Row() {
+            TableElement(table = listOfTables[0], isClicked = isClicked)
+            TableElement(table = listOfTables[1], isClicked = isClicked)
+            TableElement(table = listOfTables[2], isClicked = isClicked)
         }
-        Row {
-            OneElement(modifier)
-            OneElement(modifier)
+        Row() {
+            TableElement(table = listOfTables[3], isClicked = isClicked)
+            TableElement(table = listOfTables[4], isClicked = isClicked)
+            TableElement(table = listOfTables[5], isClicked = isClicked)
         }
+        Row() {
+            TableElement(table = listOfTables[6], isClicked = isClicked)
+            TableElement(table = listOfTables[7], isClicked = isClicked)
+            TableElement(table = listOfTables[8], isClicked = isClicked)
+        }
+    }
+}
+
+private val listOfTables = listOf(
+    Table(id = 1, places = 4, available = true),
+    Table(id = 2, places = 4, available = true),
+    Table(id = 3, places = 4, available = true),
+    Table(id = 4, places = 4, available = false),
+    Table(id = 5, places = 4, available = true),
+    Table(id = 6, places = 4, available = false),
+    Table(id = 7, places = 4, available = true),
+    Table(id = 8, places = 4, available = false),
+    Table(id = 9, places = 4, available = true)
+)
+
+data class Table(
+    val id: Int,
+    val places: Int,
+    val available: Boolean
+)
+
+@ExperimentalMaterial3Api
+@Composable
+fun TableElement(table: Table, isClicked: MutableState<Int>) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenWidthDp.dp
+
+    val width = animateDpAsState(
+        targetValue = if (isClicked.value == table.id) screenWidth else if (isClicked.value == 0) screenWidth / 3 else 0.dp,
+        animationSpec = tween(durationMillis = 500, easing = FastOutLinearInEasing)
+    )
+    val height = animateDpAsState(
+        targetValue = if (isClicked.value == table.id) screenHeight else if (isClicked.value == 0) screenHeight / 3 else 0.dp,
+        animationSpec = tween(durationMillis = 500, easing = FastOutLinearInEasing)
+    )
+    ElevatedCard(
+        modifier = Modifier
+            .width(width.value)
+            .height(height.value)
+            .padding(16.dp)
+            .clickable {
+                if (table.available) {
+                    isClicked.value = if (width.value == screenWidth) 0 else table.id
+                }
+            },
+        containerColor = if (table.available) MaterialTheme.colorScheme.surface
+        else Color.LightGray
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            text = if (table.available) "Available" else "Unavailable",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelMedium
+        )
     }
 }
 
@@ -121,6 +191,8 @@ fun OneElement(modifier: Modifier) {
     }
 }
 
+@ExperimentalComposeUiApi
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Preview(
     name = "Order the table",
     showSystemUi = true,
@@ -129,4 +201,56 @@ fun OneElement(modifier: Modifier) {
 @Composable
 fun OrderScreenPreview() {
     OrderScreen()
+}
+
+@ExperimentalMaterial3Api
+@ExperimentalComposeUiApi
+@Composable
+fun MyCalendarView(showDialog: Boolean, setShowDialog: (Boolean) -> Unit) {
+    if (showDialog) {
+        Dialog(
+            onDismissRequest = {
+                setShowDialog(false)
+            }
+        ) {
+            ElevatedCard {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    AndroidView({ CalendarView(it) },
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        update = { view ->
+                            view.setOnDateChangeListener { _, year, mon, dom ->
+
+                            }
+                        }
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TextButton(
+                            onClick = {
+                                setShowDialog(false)
+                            },
+                        ) {
+                            Text("Confirm")
+                        }
+
+                        TextButton(
+                            onClick = {
+                                setShowDialog(false)
+                            },
+                        ) {
+                            Text("Dismiss")
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
 }
