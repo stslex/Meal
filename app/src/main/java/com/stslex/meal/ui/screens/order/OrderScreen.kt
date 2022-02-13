@@ -63,7 +63,9 @@ private val listOfTables = listOf(
 
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class,
+    androidx.compose.foundation.ExperimentalFoundationApi::class
+)
 @Preview(
     name = "Order the table",
     showSystemUi = true,

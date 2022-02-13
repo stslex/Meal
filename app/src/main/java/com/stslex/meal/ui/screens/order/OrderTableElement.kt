@@ -51,37 +51,41 @@ fun TableElement(table: OrderTable, isClicked: MutableState<Int>) {
         targetValue = if (isClicked.value == table.id || isClicked.value == 0) {
             Color.Black
         } else Color.White,
-        animationSpec = tween(durationMillis = 700, easing = FastOutLinearInEasing)
+        animationSpec = tween(durationMillis = 500, easing = FastOutLinearInEasing)
     )
     val labelId = if (table.available) R.string.label_available else R.string.label_unavailable
     val textLabel = stringResource(id = labelId)
 
-    ElevatedCard(
-        modifier = Modifier
-            .width(width.value)
-            .height(height.value)
-            .padding(16.dp)
-            .wrapContentSize(Alignment.Center)
-            .clickable {
-                if (table.available) {
-                    isClicked.value = if (width.value == screenWidth) 0 else table.id
-                }
-            },
-        containerColor = color.value
-    ) {
-        BackHandler(enabled = width.value == screenWidth) {
-            isClicked.value = 0
-        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+    Column {
+        ElevatedCard(
+            modifier = Modifier
+                .width(width.value)
+                .height(height.value)
+                .padding(16.dp)
+                .wrapContentSize(Alignment.Center)
+                .clickable {
+                    if (table.available) {
+                        isClicked.value = if (width.value == screenWidth) 0 else table.id
+                    }
+                },
+            containerColor = color.value
         ) {
-            if (isClicked.value == 0 || isClicked.value == table.id)
+            BackHandler(enabled = width.value == screenWidth) {
+                isClicked.value = 0
+            }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
+                    modifier = Modifier.padding(8.dp),
                     text = textLabel,
                     style = MaterialTheme.typography.labelLarge,
-                    color = textColor.value
+                    color = textColor.value,
+                    maxLines = 1
                 )
+            }
         }
     }
+
 }

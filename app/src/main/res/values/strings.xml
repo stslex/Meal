@@ -6,4 +6,5 @@
 
     <string name="label_available">available</string>
     <string name="label_unavailable">unavailable</string>
+    <string name="label_order">order</string>
 </resources>
