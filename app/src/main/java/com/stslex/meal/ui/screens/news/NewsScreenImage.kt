@@ -1,25 +1,28 @@
 package com.stslex.meal.ui.screens.news
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
+import com.bumptech.glide.Glide
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.glide.GlideImage
+import com.stslex.meal.R
 import com.stslex.meal.ui.common.customPlaceholder
 import com.stslex.meal.ui.model.ImageModel
 import com.stslex.meal.ui.navigation.Screen
-import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun MainScreenImage(imageModel: ImageModel?, navController: NavController) {
-    Image(
+    GlideImage(
         modifier = Modifier
             .height(300.dp)
             .fillMaxWidth()
@@ -28,16 +31,11 @@ fun MainScreenImage(imageModel: ImageModel?, navController: NavController) {
                 navController.navigate(Screen.Details.route)
             }
             .customPlaceholder(),
+        imageModel = imageModel?.url(),
         contentScale = ContentScale.FillBounds,
-        painter = rememberImagePainter(
-            data = imageModel?.url(),
-            builder = {
-                memoryCacheKey(imageModel?.url())
-                placeholderMemoryCacheKey(imageModel?.url())
-                transformations(RoundedCornersTransformation())
-                allowHardware(true)
-                dispatcher(Dispatchers.IO)
-            }),
-        contentDescription = null
+        circularReveal = CircularReveal(duration = 1000),
+        requestBuilder = {
+            Glide.with(LocalContext.current.applicationContext).asDrawable()
+        }
     )
 }

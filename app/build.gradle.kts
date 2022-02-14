@@ -81,8 +81,14 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    implementation("io.coil-kt:coil-compose:1.4.0")
+    //Glide
+    val glideVersion = "1.4.8"
+    implementation("com.github.skydoves:landscapist-glide:$glideVersion")
+
+    //Navigation
     implementation("androidx.navigation:navigation-compose:2.5.0-alpha02")
+
+    //ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
