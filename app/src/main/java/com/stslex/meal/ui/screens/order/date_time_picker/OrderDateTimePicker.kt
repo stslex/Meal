@@ -1,4 +1,4 @@
-package com.stslex.meal.ui.screens.order.calendar
+package com.stslex.meal.ui.screens.order.date_time_picker
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,19 +9,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.stslex.meal.utils.TimeUtil.convertDate
+import com.stslex.meal.utils.TimeUtil.convertTime
+import java.util.*
 
 
 @ExperimentalMaterial3Api
 @Composable
 fun ColumnScope.DateTimePickerText(
     setCalendarDialog: (Boolean) -> Unit,
-    setTimeDialog: (Boolean) -> Unit
+    setTimeDialog: (Boolean) -> Unit,
+    settingTimestamp: MutableState<Date>
 ) {
-    val time = "14:00"
-    val date = "13.01.2020"
     Row(
         modifier = Modifier
             .padding(top = 16.dp)
@@ -34,7 +37,7 @@ fun ColumnScope.DateTimePickerText(
                     setCalendarDialog(true)
                 }
         ) {
-            TimeDateElementText(text = date)
+            TimeDateElementText(text = settingTimestamp.value.convertDate())
         }
         OutlinedCard(
             modifier = Modifier
@@ -43,7 +46,7 @@ fun ColumnScope.DateTimePickerText(
                     setTimeDialog(true)
                 }
         ) {
-            TimeDateElementText(text = time)
+            TimeDateElementText(text = settingTimestamp.value.convertTime())
         }
     }
 }
